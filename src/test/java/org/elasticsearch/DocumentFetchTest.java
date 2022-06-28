@@ -21,8 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 public class DocumentFetchTest {
-    private  RestHighLevelClient client = new RestHighLevelClient( RestClient.builder(
-            new HttpHost("localhost", 9200, "http")));;
+    private  RestHighLevelClient client;
     private final String sourceIndex = "index_test";
 
     @Before

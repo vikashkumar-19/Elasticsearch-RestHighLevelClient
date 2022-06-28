@@ -1,4 +1,25 @@
-= Demo to fetch old / new version of document using Elasticsearch Rest High Level Client
+= Demo to fetch old / new version of document using Elasticsearch Java High Level Rest Client
 
-editing....
 
+This project gives a small demo, which update document and fetch old / new version of document(s) from elasticsearch server for `update`, `update_by_query`, and `index` API request.
+
+Elasticsearch v7.7.1 with additional feature from my other project link:https://github.com/vikashkumar-19/elasticsearch[Elasticsearch] is being used while this project as a server side to update and fetch document from Rest Client.
+
+== Dependencies
+- elasticsearch.jar (local jar build from link:https://github.com/vikashkumar-19/elasticsearch[Elasticsearch] to reflect my required changes)
+
+- elasticsearch-rest-high-level-client.jar [ local jar build from link:https://github.com/vikashkumar-19/elasticsearch[rest-high-level-client] which reflect small changes of RequestConverter.java ]
+
+- elasticsearch-rest-high-level-client [ published here link:https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high.html[elastic.co] ]
+
+- log4j
+
+- slf4j (slf4j-simple and slf4j-api)
+
+- junit
+
+== Testing
+Run all test defined in test section of project. This tests *index*, *update*, and *update_by_query* API to just fetch document fields.
+```
+mvn test
+```
