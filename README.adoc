@@ -18,6 +18,68 @@ Elasticsearch v7.7.1 with additional feature from my other project link:https://
 
 - junit
 
+== High-level Rest Client
+It accepts request objects as an argument and returns response objects so that request marshalling and response un-marshalling is handled by the client itself. You can go through this official documentation link:https://www.elastic.co/guide/en/elasticsearch/client/java-rest/current/java-rest-high-getting-started.html[High-Level Rest Client] for other Rest APIs.
+
+Following are examples showing the working of three APIs.
+```
+// Initialization
+RestHighLevelClient client = new RestHighLevelClient( new RestClient.builder(
+                                new HttpHost("localhost", 9200, "http")));
+```
+Index Request:
+```
+// source
+XContentBuilder builder = XContentFactory.jsonBuilder();
+builder.startObject();
+    {
+        builder.field("counter", 1);
+    }
+builder.endObject();
+
+// request
+IndexRequest request = new IndexRequest("index_test").id("1")
+                .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE)
+                .source(builder)
+                .fetchSource(true);
+
+IndexResponse response = client.index(request, RequestOptions.DEFAULT);
+
+// get updated document
+GetResult result = response.getGetResult();
+Map<String, Object> source = result.getSource();
+```
+Update Request:
+```
+UpdateRequest request = new UpdateRequest("index_test","1")
+        .script( new Script("ctx._source.counter++"))
+        .fetchSource(true)
+        .fetchSourceOld(false)
+        .setRefreshPolicy(WriteRequest.RefreshPolicy.IMMEDIATE);
+
+UpdateResponse response = client.update(request, RequestOptions.DEFAULT);
+
+// extract document fields
+GetResult result = response.getGetResult();
+Map<String, Object> source = result.getSource();
+```
+Update_by_query Request:
+```
+UpdateByQueryRequest request = new UpdateByQueryRequest("index_test")
+            .setQuery(new TermQueryBuilder("counter",2))
+            .setScript(new Script("ctx._source.counter=6"))
+            .fetchSource(true)
+            .fetchSourceOld(true)
+            .setRefresh(true);
+
+BulkByScrollResponse response = client.updateByQuery(request, RequestOptions.DEFAULT);
+
+// document(s) old version
+List<GetResult> sourceOld = response.getGetResultOld();
+
+// document(s) new version
+List<GetResult> source = response.getGetResult();
+```
 == Testing
 Run all test defined in test section of project. This tests *index*, *update*, and *update_by_query* API to just fetch document fields.
 ```
