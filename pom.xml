@@ -24,6 +24,13 @@
         </dependency>
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
+            <artifactId>source</artifactId>
+            <version>7.7.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/elasticsearch-rest-high-level-client-7.7.1-SNAPSHOT-sources.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <version>7.7.1</version>
         </dependency>

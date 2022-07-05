@@ -26,6 +26,8 @@ import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -56,7 +58,6 @@ public class DocumentFetch {
         UpdateResponse response = client.update(request, prepareRequestOptions());
         return response;
     }
-
     public static BulkByScrollResponse updateByQueryDocument(String sourceIndex, RestHighLevelClient client,
                                                              Script script, TermQueryBuilder termQueryBuilder,
                                                              boolean fetchSource, boolean fetchSourceOld) throws IOException {
@@ -113,19 +114,19 @@ public class DocumentFetch {
             this.owner = owner;
         }
 
+        public static String getStringForm(Map<String, Object> obj){
+            return "{" +
+                    "\"counter\":" + obj.get("counter") +
+                    ",\"tag\":\"" + obj.get("tag") + '\"' +
+                    ",\"owner\":\"" + obj.get("owner") + '\"' +
+                    '}';
+        }
         @Override
         public String toString() {
             return "{" +
                     "\"counter\":" + counter +
                     ",\"tag\":\"" + tag + '\"' +
                     ",\"owner\":\"" + owner + '\"' +
-                    '}';
-        }
-        public String toStringOrder2(){
-            return "{" +
-                    "\"owner\":\"" + owner + '\"' +
-                    ",\"counter\":" + counter +
-                    ",\"tag\":\"" + tag + '\"' +
                     '}';
         }
     }
